@@ -35,8 +35,7 @@ async function run() {
 
     /* *************** Get  *************** */
     app.get("/coffee", async (req, res) => {
-      const cursor = coffeeCollection.find();
-      const result = await cursor.toArray();
+      const result = await coffeeCollection.find().toArray();
       res.send(result);
     });
 
