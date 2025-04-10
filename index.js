@@ -33,12 +33,6 @@ async function run() {
 
     const userCollection = client.db("coffeeDB").collection("users");
 
-    app.get("/", (req, res) => {
-      res.send({
-        activeStatus: true,
-        error: false,
-      });
-    });
     /* *************** Get  *************** */
     app.get("/coffee", async (req, res) => {
       const cursor = coffeeCollection.find();
@@ -141,10 +135,6 @@ run().catch(console.dir);
 app.get("/", (req, res) => {
   res.send("Coffee Store Server is running.");
 });
-
-/* ***************  *************** */
-app.get("/favicon.ico", (req, res) => res.status(204));
-/* ***************  *************** */
 
 app.listen(port, () => {
   console.log(`server is running on port: ${port}`);
