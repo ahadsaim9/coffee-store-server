@@ -34,7 +34,10 @@ async function run() {
     const userCollection = client.db("coffeeDB").collection("users");
 
     app.get("/", (req, res) => {
-      res.send("Server is running...");
+      res.send({
+        activeStatus: true,
+        error: false,
+      });
     });
     /* *************** Get  *************** */
     app.get("/coffee", async (req, res) => {
