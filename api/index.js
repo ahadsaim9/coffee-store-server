@@ -14,7 +14,7 @@ app.use(
   cors({
     origin: [
       "https://coffee-store-server-ahad-ali.vercel.app/",
-      "http://localhost:50001",
+      "http://localhost:5173/",
     ],
     credentials: true,
   })
