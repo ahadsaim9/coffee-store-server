@@ -12,7 +12,10 @@ app.use(express.json());
 /* *************** end middleware *************** */
 app.use(
   cors({
-    origin: ["https://coffee-store-4c2e5.web.app", "http://localhost:5173"],
+    origin: [
+      "https://coffee-store-server-ahad-ali.vercel.app/",
+      "http://localhost:50001",
+    ],
     credentials: true,
   })
 );
