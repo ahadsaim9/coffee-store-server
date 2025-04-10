@@ -10,12 +10,7 @@ app.use(cors());
 app.use(express.json());
 
 /* *************** end middleware *************** */
-app.use(
-  cors({
-    origin: ["https://coffee-store-4c2e5.web.app", "http://localhost:5173"],
-    credentials: true,
-  })
-);
+
 /* ***************  *************** */
 
 const uri = `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASS}@cluster0.04p06.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`;
