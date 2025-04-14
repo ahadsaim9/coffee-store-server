@@ -10,15 +10,7 @@ app.use(cors());
 app.use(express.json());
 
 /* *************** end middleware *************** */
-app.use(
-  cors({
-    origin: [
-      "https://coffee-store-server-ahad-ali.vercel.app/",
-      "http://localhost:5173/",
-    ],
-    credentials: true,
-  })
-);
+
 /* ***************  *************** */
 
 const uri = `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASS}@cluster0.04p06.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`;
@@ -38,12 +30,12 @@ async function run() {
     await client.connect();
 
     const coffeeCollection = client.db("coffeeDB").collection("coffee");
-
     const userCollection = client.db("coffeeDB").collection("users");
 
     /* *************** Get  *************** */
     app.get("/coffee", async (req, res) => {
-      const result = await coffeeCollection.find().toArray();
+      const cursor = coffeeCollection.find();
+      const result = await cursor.toArray();
       res.send(result);
     });
 
@@ -89,39 +81,35 @@ async function run() {
       const result = await coffeeCollection.deleteOne(query);
       res.send(result);
     });
-    /* *************** User related api *************** */
 
+    /* *************** Users related API *************** */
     app.get("/users", async (req, res) => {
       const cursor = userCollection.find();
       const result = await cursor.toArray();
       res.send(result);
     });
-    /* *************** User Deleted *************** */
+
+    app.patch("/users", async (req, res) => {
+      const email = req.body.email;
+      const filter = { email };
+      const userDos = {
+        $set: {
+          lastSignInTime: req?.body?.lastSignInTime,
+        },
+      };
+      const result = await userCollection.updateOne(filter, userDos);
+      res.send(result);
+    });
+
     app.delete("/users/:id", async (req, res) => {
       const id = req.params.id;
       const query = { _id: new ObjectId(id) };
       const result = await userCollection.deleteOne(query);
       res.send(result);
     });
-
     app.post("/users", async (req, res) => {
       const newUser = req.body;
-      // console.log("creating A new user", newUser);
       const result = await userCollection.insertOne(newUser);
-      res.send(result);
-    });
-
-    /* ***************  *************** */
-    app.patch("/users", async (req, res) => {
-      const email = req.body?.email;
-      const filter = { email };
-      const updateDoc = {
-        $set: {
-          lastSignInTime: req.body?.lastSignInTime,
-        },
-      };
-      const options = { upsert: true };
-      const result = await userCollection.updateOne(filter, updateDoc, options);
       res.send(result);
     });
 
